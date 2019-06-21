@@ -15,7 +15,7 @@ This is Template NativeScript project used for S&amp;P
 # Steps to include unit test:  
 Note: Unit Test NS using the following frameworks (JASMINE, MOCHA and QUNIT) to write and execute tests, NS using Karma server to run unit test.  
 
-- tns test init  
+- tns test init  (This command should generate src/tests/example.ts and create karma server on the root of project).
 - npm i @types/mocha --save-dev (to enable write unit test for typescript/angular).
 
 Note: I found there is need to run the following steps:  
@@ -23,4 +23,8 @@ Note: I found there is need to run the following steps:
 - Open webpack.config.js file then add this property {"child_process": "empty" } to ```node:```
 
 - Run the test using on of the following commands:  
-```tns test iOS```     or    ```tns test android```.
+```tns test iOS```     or    ```tns test android```.  
+
+#Links and Refernces:  
+https://www.nativescript.org/nativescript-is-how-you-build-native-mobile-apps-with-angular  
+https://docs.nativescript.org/tooling/testing/testing
