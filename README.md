@@ -25,6 +25,6 @@ Note: I found there is need to run the following steps:
 - Run the test using on of the following commands:  
 ```tns test iOS```     or    ```tns test android```.  
 
-# Links and Refernces:  
+# Links and References:  
 https://www.nativescript.org/nativescript-is-how-you-build-native-mobile-apps-with-angular  
 https://docs.nativescript.org/tooling/testing/testing
