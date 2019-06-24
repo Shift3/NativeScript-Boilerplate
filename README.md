@@ -25,9 +25,16 @@ Note: I found there is need to run the following steps:
 - Run the test using on of the following commands:  
 ```tns test iOS```     or    ```tns test android```.  
 
-#setup CircleCI:
--https://github.com/SBats/tns-circleci-example/tree/master/circle-ci-setup
+# Setup CircleCI:  
+- Signup/Login to circleci.
+- Select this project then hit Set up Project.
+- Select macOS operating system then Other language.
+- Configure your .circleci/config.yml then click on Start Building.  
+
+Note: You need macOS plan to run this on circleci.  
+Note: Protect master branch on github by going to settings then check out ```Require status check...``` then select ```CircleCI```.  
 
 # Links and References:  
 https://www.nativescript.org/nativescript-is-how-you-build-native-mobile-apps-with-angular  
 https://docs.nativescript.org/tooling/testing/testing
+https://github.com/SBats/tns-circleci-example/tree/master/circle-ci-setup
