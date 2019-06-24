@@ -75,6 +75,30 @@ jobs:
             npx tns error-reporting disable
             npx tns test ios --justlaunch
 
+  test-e2e:
+    <<: *default_config
+    steps:
+      - attach_workspace:
+          at: ~/circleci
+      - run:
+          name: "Run E2E tests"
+          command: |
+            npx tns usage-reporting disable
+            npx tns error-reporting disable
+            echo "TODO"
+
+  deploy:
+    <<: *default_config
+    steps:
+      - attach_workspace:
+          at: ~/circleci
+      - run:
+          name: "Deploy"
+          command: |
+            npx tns usage-reporting disable
+            npx tns error-reporting disable
+            ./scripts/deploy.sh
+
 workflows:
   version: 2
   build-test-and-deploy:
@@ -83,4 +107,12 @@ workflows:
       - test-unit:
           requires:
             - build
+      - test-e2e:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test-unit
+            - test-e2e
 
