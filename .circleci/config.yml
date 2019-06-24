@@ -1,38 +1,117 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
+
+default_config: &default_config
+  working_directory: ~/circleci/tns-circleci-example
+  macos:
+    xcode: "9.3.0"
+  environment:
+    ANDROID_HOME: "/usr/local/share/android-sdk"
+
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10.15.0
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+    <<: *default_config
     steps:
       - checkout
-
-      # Download and cache dependencies
+      - add_ssh_keys
+      - run:
+          name: Fetch CocoaPods repository
+          command: |
+            curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+            # Fetch cocoapods specs from S3 instead of github
+      - run:
+          name: Setup system dependencies
+          command: |
+            brew update
+            brew cask install android-sdk
+            echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-25" "build-tools;25.0.2" "extras;android;m2repository" "extras;google;m2repository"
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: sudo npm install -g nativescript
-      - run: npm install
-
+          key: npm-cache-{{ checksum "./package-lock.json" }}
+      - run:
+          name: "Install node dependencies"
+          command: |
+            npm install
+            npx tns usage-reporting disable
+            npx tns error-reporting disable
       - save_cache:
+          key: npm-cache-{{ checksum "./package-lock.json" }}
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - ~/.npm
+      - run:
+          name: "Rebuild Node SASS bindings"
+          command: npm rebuild node-sass --force
+      - run:
+          name: "Pre-launch iOS Simulator"
+          command: xcrun instruments -w "iPhone 8 (11.2) [" || true
+      - run:
+          name: "Prepare ios"
+          # Hack -> git log outputed as error
+          command: npx tns prepare ios || echo "ios build done"
+      - run:
+          name: "Prepare Android"
+          command: npx tns prepare android
+      - run:
+          name: "Build iOS"
+          command: |
+            ./scripts/build_ios.sh org.nativescript.circleciint
+      - run:
+          name: "Build Android"
+          command: |
+            ./scripts/build_android.sh
+      - persist_to_workspace:
+          root: ~/circleci
+          paths:
+            - tns-circleci-example
 
-      # run tests!
-      - run: tns test ios
+  test-unit:
+    <<: *default_config
+    steps:
+      - attach_workspace:
+          at: ~/circleci
+      - run:
+          name: "Run unit tests"
+          # --justlaunch ensure the unit test suite give the hand back to the CLI in the end
+          command: |
+            npx tns usage-reporting disable
+            npx tns error-reporting disable
+            npx tns test ios --justlaunch
+
+  test-e2e:
+    <<: *default_config
+    steps:
+      - attach_workspace:
+          at: ~/circleci
+      - run:
+          name: "Run E2E tests"
+          command: |
+            npx tns usage-reporting disable
+            npx tns error-reporting disable
+            echo "TODO"
+
+  deploy:
+    <<: *default_config
+    steps:
+      - attach_workspace:
+          at: ~/circleci
+      - run:
+          name: "Deploy"
+          command: |
+            npx tns usage-reporting disable
+            npx tns error-reporting disable
+            ./scripts/deploy.sh
+
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - build
+      - test-unit:
+          requires:
+            - build
+      - test-e2e:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test-unit
+            - test-e2e
