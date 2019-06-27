@@ -28,7 +28,7 @@ describe('App suite', function () {
 
 	it("decrease tap account", function() {
 		appComponent.onTap();
-		expect(appComponent.message).equal("16 taps left");
+		expect(appComponent.message).equal("15 taps left");
 	})
 });
 
