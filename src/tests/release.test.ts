@@ -3,6 +3,7 @@ import { ReleaseService } from "../app/services/release.service";
 describe('Release notes: ', function () {
 	var releaseService: ReleaseService = new ReleaseService();
 	var data: string;
+	var dataUpperCase: string;
 	var isReleaseFileExist: boolean;
 
 	it("Release notes is exist.", function () {
@@ -12,7 +13,8 @@ describe('Release notes: ', function () {
 
 	it("Read most recent release notes.", function () {
 		if (!!isReleaseFileExist) {
-			data = releaseService.readReleaseFile()
+			data = releaseService.readReleaseFile();
+			dataUpperCase = data.toUpperCase();
 			expect(data).not.equal(null);
 			expect(data).not.equal(undefined);
 			expect(data).not.equal("");
@@ -56,8 +58,8 @@ describe('Release notes: ', function () {
 
 		it("Not Include IOS keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contain("IOS");
-				expect(data.toUpperCase()).not.contain("APPLE");
+				expect(dataUpperCase).not.contain("IOS");
+				expect(dataUpperCase).not.contain("APPLE");
 			}
 		});
 	});
@@ -65,8 +67,8 @@ describe('Release notes: ', function () {
 	describe('(IOS Platform)', function () {
 		it("Not Include android keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contain("ANDROID");
-				expect(data.toUpperCase()).not.contain("GOOGLE");
+				expect(dataUpperCase).not.contain("ANDROID");
+				expect(dataUpperCase).not.contain("GOOGLE");
 			}
 		});
 	});
