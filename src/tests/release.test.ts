@@ -3,6 +3,7 @@ import { ReleaseService } from "../app/services/release.service";
 describe('Release notes: ', function () {
 	var releaseService: ReleaseService = new ReleaseService();
 	var data: string;
+	var dataUpperCase: string;
 	var isReleaseFileExist: boolean;
 
 	it("Release notes is exist.", function () {
@@ -12,7 +13,8 @@ describe('Release notes: ', function () {
 
 	it("Read most recent release notes.", function () {
 		if (!!isReleaseFileExist) {
-			data = releaseService.readReleaseFile()
+			data = releaseService.readReleaseFile();
+			dataUpperCase = data.toUpperCase();
 			expect(data).not.equal(null);
 			expect(data).not.equal(undefined);
 			expect(data).not.equal("");
@@ -56,7 +58,7 @@ describe('Release notes: ', function () {
 
 		it("Not Include IOS, APPLE keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contain("IOS").not.contain("APPLE");
+				expect(dataUpperCase).not.contain("IOS").not.contain("APPLE");
 			}
 		});
 	});
@@ -64,28 +66,28 @@ describe('Release notes: ', function () {
 	describe('(IOS Platform)', function () {
 		it("Not Include Android, Amazon, Blackberry or Windows keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contains("ANDROID").not.contain("GOOGLE")
+				expect(dataUpperCase).not.contains("ANDROID").not.contain("GOOGLE")
 				.not.contains("AMAZON").not.contain("BLACKBERRY").not.contain("WINDOWS");
 			}
 		});
 
 		it("Not Include ALPHA, BETA or TESTING keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contains("ALPHA").not.contain("BETA")
+				expect(dataUpperCase).not.contains("ALPHA").not.contain("BETA")
 				.not.contains("TESTING");
 			}
 		});
 
 		it("Not Include coming soon, coming shortly, with the next release, arriving soon keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contains("COMING SOON").not.contain("COMING SHORTLY")
+				expect(dataUpperCase).not.contains("COMING SOON").not.contain("COMING SHORTLY")
 				.not.contains("WITH THE NEXT RELEASE").not.contain("ARRIVING SOON");
 			}
 		});
 
 		it("Not Include Lorem Ipsum keyword.", function () {
 			if (!!data) {
-				expect(data.toUpperCase()).not.contains("LOREM IPSUM");
+				expect(dataUpperCase).not.contains("LOREM IPSUM");
 			}
 		});
 	});
