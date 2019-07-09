@@ -56,19 +56,38 @@ describe('Release notes: ', function () {
 			}
 		});
 
-		it("Not Include IOS keyword.", function () {
+		it("Not Include IOS, APPLE keyword.", function () {
 			if (!!data) {
-				expect(dataUpperCase).not.contain("IOS");
-				expect(dataUpperCase).not.contain("APPLE");
+				expect(dataUpperCase).not.contain("IOS").not.contain("APPLE");
 			}
 		});
 	});
 
 	describe('(IOS Platform)', function () {
-		it("Not Include android keyword.", function () {
+		it("Not Include Android, Amazon, Blackberry or Windows keyword.", function () {
 			if (!!data) {
-				expect(dataUpperCase).not.contain("ANDROID");
-				expect(dataUpperCase).not.contain("GOOGLE");
+				expect(dataUpperCase).not.contains("ANDROID").not.contain("GOOGLE")
+				.not.contains("AMAZON").not.contain("BLACKBERRY").not.contain("WINDOWS");
+			}
+		});
+
+		it("Not Include ALPHA, BETA or TESTING keyword.", function () {
+			if (!!data) {
+				expect(dataUpperCase).not.contains("ALPHA").not.contain("BETA")
+				.not.contains("TESTING");
+			}
+		});
+
+		it("Not Include coming soon, coming shortly, with the next release, arriving soon keyword.", function () {
+			if (!!data) {
+				expect(dataUpperCase).not.contains("COMING SOON").not.contain("COMING SHORTLY")
+				.not.contains("WITH THE NEXT RELEASE").not.contain("ARRIVING SOON");
+			}
+		});
+
+		it("Not Include Lorem Ipsum keyword.", function () {
+			if (!!data) {
+				expect(dataUpperCase).not.contains("LOREM IPSUM");
 			}
 		});
 	});
