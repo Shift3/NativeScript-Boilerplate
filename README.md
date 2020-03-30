@@ -2,22 +2,21 @@
 This is Template NativeScript project used for S&amp;P
 
 # Steps to generate NativeScript project:  
-
-- ```tns create my-angular-app --ng```
-- cd my-angular-app
-- ```tns doctor```
+- Run ```tns create my-angular-app --ng``` (To create a new nativescript project).
+- Run ```cd my-angular-app``` (To enter prject folder).
+- Run ```tns doctor``` (To check status).
   Note: If you found some module is not up to date you should run ```tns migrate``` then ```tns update```.
-- ```update tns-android``` and ```update tns-ios``` version to latest
+- Run ```update tns-android``` and ```update tns-ios``` version to latest
 - ```npm install -g nativescript@latest```
-- ```ng generate component login```
+- Run ```ng generate component login``` (To create login component).
 - Run the app using one of the following commands:  
 ```tns debug iOS```     or    ```tns debug android```.  
 
 # Steps to include unit test:  
 Note: Unit Test NS using the following frameworks (JASMINE, MOCHA and QUNIT) to write and execute tests, NS using Karma server to run unit test.  
 
-- tns test init  (This command should generate src/tests/example.ts and create karma server on the root of project).
-- npm i @types/mocha --save-dev (to enable write unit test for typescript/angular).
+- Run ```tns test init```  (This command should generate src/tests/example.ts and create karma server on the root of project).
+- Run ```npm i @types/mocha --save-dev``` (to enable write unit test for typescript/angular).
 
 Note: I found there is need to do the following steps:  
 - Run this command ```npm i net -S```
