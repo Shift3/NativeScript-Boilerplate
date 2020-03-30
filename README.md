@@ -2,6 +2,7 @@
 This is Template NativeScript project used for S&amp;P
 
 # Steps to generate NativeScript project:  
+- Go through setp steps in https://docs.nativescript.org/angular/start/quick-setup.
 - Run ```tns create my-angular-app --ng``` (To create a new nativescript project).
 - Run ```cd my-angular-app``` (To enter prject folder).
 - Run ```tns doctor``` (To check status).
