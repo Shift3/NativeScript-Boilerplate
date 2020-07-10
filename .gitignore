@@ -28,6 +28,7 @@ yarn-error.log*
 tmp/
 typings/
 bkp/
+src/environments/environment.dev.ts
 
 # Visual Studio Code
 .vscode/*

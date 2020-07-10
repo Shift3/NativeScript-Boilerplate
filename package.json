@@ -1,6 +1,6 @@
 {
     "nativescript": {
-        "id": "org.nativescript.fcoeplanner",
+        "id": "org.nativescript.spnativescript",
         "tns-android": {
             "version": "6.5.0"
         },
@@ -53,5 +53,5 @@
         "typescript": "3.4.5"
     },
     "gitHead": "9b6565a4513375a33a59c44262dfc1d818a8205e",
-    "readme": "FCOE Planner Application"
+    "readme": "NativeScript Application"
 }
