@@ -1,94 +1,214 @@
-import { ReleaseService } from "../app/services/release.service";
+import { ReleaseService } from '@infrastructure/services/release.service';
 
-describe('Release notes: ', function () {
-	var releaseService: ReleaseService = new ReleaseService();
-	var data: string;
-	var dataUpperCase: string;
-	var isReleaseFileExist: boolean;
+const isLinesEndConsistent = (notesString: string) => {
+    const notes = notesString.split('\n');
+    const numberOfNotes = notes.length;
+    const numberOfNotesEndWithDot = notes.filter(note => note.endsWith('.')).length;
+    const numberOfNotesNotEndWithDot = notes.filter(note => !note.endsWith('.')).length;
 
-	it("Release notes is exist.", function () {
-		isReleaseFileExist = releaseService.checkReleaseFileExist();
-		expect(isReleaseFileExist).equal(true);
-	});
+    return numberOfNotes === Math.abs(numberOfNotesEndWithDot - numberOfNotesNotEndWithDot);
+};
 
-	it("Read most recent release notes.", function () {
-		if (!!isReleaseFileExist) {
-			data = releaseService.readReleaseFile();
-			dataUpperCase = data.toUpperCase();
-			expect(data).not.equal(null);
-			expect(data).not.equal(undefined);
-			expect(data).not.equal("");
-		}
-	});
+const isNotesStartWithUpperCase = (notesString: string) => {
+    const notes = notesString.split('\n');
+    const numberOfNotes = notes.length;
+    const numberOfNotesStartWithUpperCase = notes.filter(
+        note => note[0] === note[0].toUpperCase()
+    ).length;
 
-	it("Notes lines either end or not end with dot.", function () {
-		if (!!data) {
-			var isLinesEndConsistent = releaseService.isLinesEndConsistent(data);
-			expect(isLinesEndConsistent).equal(true);
-		}
-	});
+    return numberOfNotes === numberOfNotesStartWithUpperCase;
+};
 
-	it("Notes lines start with upper case.", function () {
-		if (!!data) {
-			var isNotesStartWithUpperCase = releaseService.isNotesStartWithUpperCase(data);
-			expect(isNotesStartWithUpperCase).equal(true);
-		}
-	});
+const isNotesStartWithSpace = (notesString: string) => {
+    const notes = notesString.split('\n');
+    const numberOfNotesStartWithUpperCase = notes.filter(
+        note => note[0] === ' '
+    ).length;
 
-	it("Notes lines not start with space.", function () {
-		if (!!data) {
-			var isNotesStartWithSpace = releaseService.isNotesStartWithSpace(data);
-			expect(isNotesStartWithSpace).equal(false);
-		}
-	});
+    return numberOfNotesStartWithUpperCase > 0;
+};
 
-	it("Notes lines has not long space.", function () {
-		if (!!data) {
-			var isNotesHasLongSpace = releaseService.isNotesHasLongSpace(data);
-			expect(isNotesHasLongSpace).equal(false);
-		}
-	});
+const isNotesHasLongSpace = (notesString: string) => {
+    const notes = notesString.split('\n');
+    const numberOfNotesHasLongSpaces = notes.filter(
+        note => note.indexOf('  ') > 0
+    ).length;
 
-	describe('(Android Platform)', function () {
-		it("Less than 500 characters.", function () {
-			if (!!data) {
-				expect(data.length).lessThan(501);
-			}
-		});
+    return numberOfNotesHasLongSpaces > 0;
+};
 
-		it("Not Include IOS, APPLE keyword.", function () {
-			if (!!data) {
-				expect(dataUpperCase).not.contain("IOS").not.contain("APPLE");
-			}
-		});
-	});
+const checkReleaseFileExist = () => {
+    return (
+        this.releases.filter(
+            (release: { title: any; RELEASE_VERSION: any; }) => release.title === release.RELEASE_VERSION
+        ).length > 0
+    );
+};
 
-	describe('(IOS Platform)', function () {
-		it("Not Include Android, Amazon, Blackberry or Windows keyword.", function () {
-			if (!!data) {
-				expect(dataUpperCase).not.contains("ANDROID").not.contain("GOOGLE")
-				.not.contains("AMAZON").not.contain("BLACKBERRY").not.contain("WINDOWS");
-			}
-		});
+describe('Release notes: ', () => {
+    let releaseService: ReleaseService;
+    let data: string;
+    let dataUpperCase: string;
+    let isReleaseFileExist: boolean;
 
-		it("Not Include ALPHA, BETA or TESTING keyword.", function () {
-			if (!!data) {
-				expect(dataUpperCase).not.contains("ALPHA").not.contain("BETA")
-				.not.contains("TESTING");
-			}
-		});
+    before(() => {
+        releaseService = new ReleaseService();
+        isReleaseFileExist = releaseService.checkReleaseFileExist();
+        data = releaseService.readReleaseFile();
+    });
 
-		it("Not Include coming soon, coming shortly, with the next release, arriving soon keyword.", function () {
-			if (!!data) {
-				expect(dataUpperCase).not.contains("COMING SOON").not.contain("COMING SHORTLY")
-				.not.contains("WITH THE NEXT RELEASE").not.contain("ARRIVING SOON");
-			}
-		});
+    it('Check last version.', () => {
+        expect(releaseService.RELEASE_VERSION).equal('1.0.0');
+    });
 
-		it("Not Include Lorem Ipsum keyword.", function () {
-			if (!!data) {
-				expect(dataUpperCase).not.contains("LOREM IPSUM");
-			}
-		});
-	});
+    it('Release notes is exist.', () => {
+        expect(isReleaseFileExist).equal(true);
+    });
+
+    it('Read most recent release notesnot equal null.', () => {
+        if (isReleaseFileExist) {
+            dataUpperCase = data.toUpperCase();
+            expect(data).not.equal(null);
+        }
+    });
+
+    it('Read most recent release notes not undefined.', () => {
+        if (isReleaseFileExist) {
+            dataUpperCase = data.toUpperCase();
+            expect(data).not.equal(undefined);
+        }
+    });
+
+    it('Read most recent release notes not empty.', () => {
+        if (isReleaseFileExist) {
+            dataUpperCase = data.toUpperCase();
+            expect(data).not.equal('');
+        }
+    });
+
+    it('Notes lines either end or not end with dot.', () => {
+        if (!!data) {
+            expect(isLinesEndConsistent(data)).equal(true);
+        }
+    });
+
+    it('Notes lines start with upper case.', () => {
+        if (!!data) {
+            expect(isNotesStartWithUpperCase(data)).equal(true);
+        }
+    });
+
+    it('Notes lines not start with space.', () => {
+        if (!!data) {
+            const isStartWithSpace = isNotesStartWithSpace(data);
+            expect(isStartWithSpace).equal(false);
+        }
+    });
+
+    it('Notes lines has not long space.', () => {
+        if (!!data) {
+            const hasLongSpace = isNotesHasLongSpace(data);
+            expect(hasLongSpace).equal(false);
+        }
+    });
+
+    describe('(Android Platform)', () => {
+        it('Less than 500 characters.', () => {
+            if (!!data) {
+                expect(data.length).lessThan(501);
+            }
+        });
+
+        it('Not Include APPLE keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('APPLE');
+            }
+        });
+
+        it('Not Include IOS keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('IOS');
+            }
+        });
+    });
+
+    describe('(IOS Platform)', () => {
+        it('Not Include Android keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('ANDROID');
+            }
+        });
+
+        it('Not Include GOOGLE keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('GOOGLE');
+            }
+        });
+
+        it('Not Include Amazon keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('AMAZON');
+            }
+        });
+
+        it('Not Include Blackberry keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('BLACKBERRY');
+            }
+        });
+
+        it('Not Include Windows keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('WINDOWS');
+            }
+        });
+
+        it('Not Include ALPHA keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('ALPHA');
+            }
+        });
+
+        it('Not Include BETA or TESTING keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('BETA');
+            }
+        });
+
+        it('Not Include TESTING keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('TESTING');
+            }
+        });
+
+        it('Not Include coming soon keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('COMING SOON');
+            }
+        });
+
+        it('Not Include coming shortly keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('COMING SHORTLY');
+            }
+        });
+
+        it('Not Include with the next release keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('WITH THE NEXT RELEASE');
+            }
+        });
+
+        it('Not Include arriving soon keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contain('ARRIVING SOON');
+            }
+        });
+
+        it('Not Include Lorem Ipsum keyword.', () => {
+            if (!!data) {
+                expect(dataUpperCase).not.contains('LOREM IPSUM');
+            }
+        });
+    });
 });

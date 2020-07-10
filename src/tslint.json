@@ -1,0 +1,32 @@
+{
+    "extends": "../tslint.json",
+    "rules": {
+        "no-console": [
+            true
+        ],
+        "comment-format": [
+            true,
+            "check-space"
+        ],
+        "curly": false,
+        "directive-selector": [
+            true,
+            "attribute"
+        ],
+        "indent": [
+            true,
+            "spaces",
+            4
+        ],
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "no-bitwise": false,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-whitespace"
+        ]
+    }
+}

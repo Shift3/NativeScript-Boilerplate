@@ -1,13 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { Item } from "./item";
-import { ItemService } from "./item.service";
+import { Item } from './item';
+import { ItemService } from './item.service';
 
 @Component({
-    selector: "ns-details",
+    selector: 'ns-details',
+    providers: [ItemService],
     moduleId: module.id,
-    templateUrl: "./item-detail.component.html"
+    templateUrl: './item-detail.component.html'
 })
 export class ItemDetailComponent implements OnInit {
     item: Item;
