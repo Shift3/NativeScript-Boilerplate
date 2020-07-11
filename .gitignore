@@ -7,6 +7,7 @@ platforms/
 *.js.map
 *.js
 !webpack.config.js
+!karma.conf.js
 
 # Logs
 logs
@@ -16,6 +17,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # General
+.migration_backup
+.update_backup
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -24,6 +27,8 @@ yarn-error.log*
 .project
 tmp/
 typings/
+bkp/
+src/environments/environment.dev.ts
 
 # Visual Studio Code
 .vscode/*
