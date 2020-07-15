@@ -1,3 +1,5 @@
+/* eslint-disable capitalized-comments */
+/* eslint-disable multiline-comment-style */
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 
@@ -15,12 +17,12 @@ import { ReleaseService } from '@infrastructure/services/release.service';
     bootstrap: [
         AppComponent
     ],
+    declarations: [
+        AppComponent
+    ],
     imports: [
         NativeScriptModule,
         AppRoutingModule
-    ],
-    declarations: [
-        AppComponent,
     ],
     providers: [
         ReleaseService
@@ -29,7 +31,9 @@ import { ReleaseService } from '@infrastructure/services/release.service';
         NO_ERRORS_SCHEMA
     ]
 })
+
 /*
-Pass your application module to the bootstrapModule function located in main.ts to start your app
-*/
+ * Pass your application module to the bootstrapModule function
+ * located in main.ts to start your app
+ */
 export class AppModule { }

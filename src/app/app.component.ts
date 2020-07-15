@@ -1,23 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'ns-app',
     moduleId: module.id,
+    selector: 'ns-app',
     templateUrl: './app.component.html'
 })
 export class AppComponent {
-    public counter = 16;
 
-    public get message(): string {
-        if (this.counter > 0) {
-            return this.counter + ' taps left';
-        }
-        else {
-            return 'You are ready to start building.';
-        }
-    }
-
-    public onTap() {
-        this.counter--;
+    private name = 'AppComponent'
+    public toString(): string {
+        return this.name;
     }
 }

@@ -11,6 +11,13 @@
             "dom",
             "es2015.iterable"
         ],
+        "plugins": [
+            {
+                "name": "typescript-eslint-plugin",
+                "ignoreJavaScript": true,
+                "configFile": "custom.eslintrc.js"
+            }
+        ],
         "baseUrl": "./src",
         "paths": {
             "*": [

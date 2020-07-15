@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 import { Injectable } from '@angular/core';
 
 import { Item } from './item';
@@ -36,6 +37,8 @@ export class ItemService {
     }
 
     getItem(id: number): Item {
-        return this.items.filter((item) => item.id === id)[0];
+        const ret = this.items.filter((item) => item.id === id);
+
+        return ret.length > 0 ? ret[0] : null;
     }
 }

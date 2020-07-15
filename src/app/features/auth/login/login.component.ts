@@ -1,27 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-    selector: 'ns-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
     moduleId: module.id,
+    selector: 'ns-login',
+    styleUrls: ['./login.component.scss'],
+    templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
     public userName: string;
     public userPassword: string;
 
-    constructor() { }
-
     public get isLogged(): boolean {
-        return !!this.userName && !!this.userPassword;
+        return Boolean(this.userName) && Boolean(this.userPassword);
     }
 
-    public login(userName: string, userPassword: string) {
+    public login(userName: string, userPassword: string): void {
         this.userName = userName;
         this.userPassword = userPassword;
-    }
-
-    ngOnInit() {
     }
 
 }

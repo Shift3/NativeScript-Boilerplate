@@ -7,9 +7,8 @@ platforms/
 *.js.map
 *.js
 !webpack.config.js
-!karma.conf.js
-
-# Logs
+webpack.config.js.bak
+ # Logs
 logs
 *.log
 npm-debug.log*
@@ -17,6 +16,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # General
+!karma.conf.js
 .migration_backup
 .update_backup
 .DS_Store
