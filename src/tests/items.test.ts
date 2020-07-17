@@ -1,15 +1,22 @@
 import { ItemsComponent } from '@features/item/items.component';
 import { ItemService } from '@features/item/item.service';
 
-describe('Items suite', function () {
-    let itemsComponent: ItemsComponent;
+describe(
+    'Items suite',
+    () => {
+        let itemsComponent: ItemsComponent;
 
-    beforeEach(function () {
-        itemsComponent = new ItemsComponent(new ItemService());
-    });
+        before(() => {
+            itemsComponent = new ItemsComponent(new ItemService());
+        });
 
-    it('There are available items.', function () {
-        const itm = itemsComponent.items.length > 0;
-        expect(itm).equal(true);
-    });
-});
+        it(
+            'There are available items.',
+            () => {
+                const itm = itemsComponent.items.length > 0;
+
+                expect(itm).equal(true);
+            }
+        );
+    }
+);

@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-
 import {
     FeatureRoutingModule,
-    featureComponents,
+    featureComponents
 } from '@features/feature-routing.module';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 
@@ -15,7 +14,7 @@ import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
     ],
     imports: [
         FeatureRoutingModule,
-        NativeScriptUIListViewModule,
-    ],
+        NativeScriptUIListViewModule
+    ]
 })
 export class FeatureModule { }

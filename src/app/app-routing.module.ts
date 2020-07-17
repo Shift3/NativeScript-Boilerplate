@@ -5,21 +5,23 @@ import { Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'auth',
         pathMatch: 'full',
+        redirectTo: 'auth'
     },
     {
-        path: 'auth',
-        loadChildren: () => import('@features/auth/auth.module').then((m) => m.AuthModule),
+        loadChildren: () => import('@features/auth/auth.module')
+            .then((mod) => mod.AuthModule),
+        path: 'auth'
     },
     {
-        path: 'feature',
-        loadChildren: () => import('@features/feature.module').then((m) => m.FeatureModule),
-    },
+        loadChildren: () => import('@features/feature.module')
+            .then((mod) => mod.FeatureModule),
+        path: 'feature'
+    }
 ];
 
 @NgModule({
-    imports: [NativeScriptRouterModule.forRoot(routes)],
-    exports: [NativeScriptRouterModule]
+    exports: [NativeScriptRouterModule],
+    imports: [NativeScriptRouterModule.forRoot(routes)]
 })
 export class AppRoutingModule { }

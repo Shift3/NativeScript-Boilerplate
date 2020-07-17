@@ -7,25 +7,25 @@ import { LoginComponent } from '@features/auth/login/login.component';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'login',
         pathMatch: 'full',
+        redirectTo: 'login'
     },
     {
-        path: 'login',
         component: LoginComponent,
         data: { title: 'Login' },
-    },
+        path: 'login'
+    }
 ];
 
 /**
  * Lazy loaded module for all auth-related routes.
  */
 @NgModule({
-    imports: [NativeScriptRouterModule.forChild(routes)],
     exports: [NativeScriptRouterModule],
+    imports: [NativeScriptRouterModule.forChild(routes)]
 })
 export class AuthRoutingModule { }
 
 export const authComponents = [
-    LoginComponent,
+    LoginComponent
 ];
