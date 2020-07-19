@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NativeScriptCommonModule } from 'nativescript-angular/common';
 
 import {
     AuthRoutingModule,
@@ -13,7 +14,8 @@ import {
         authComponents
     ],
     imports: [
-        AuthRoutingModule
+        AuthRoutingModule,
+        NativeScriptCommonModule
     ]
 })
 export class AuthModule { }
