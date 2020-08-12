@@ -30,7 +30,7 @@
             "@features/*": [
                 "./app/features/*"
             ],
-            "@infrastructure*": [
+            "@infrastructure/*": [
                 "./app/infrastructure/*"
             ]
         }
