@@ -13,7 +13,7 @@ export const getConfig = (dev: any, prod: any, stage: any) => {
                 return dev;
         }
     }
-
+  
     return dev;
 };
 
