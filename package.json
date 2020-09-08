@@ -30,6 +30,7 @@
         "module-alias": "^2.2.2",
         "nativescript": "^6.5.0",
         "nativescript-angular": "8.0.2",
+        "nativescript-ngx-fonticon": "^7.0.0",
         "nativescript-theme-core": "^1.0.6",
         "nativescript-ui-listview": "^8.2.0",
         "nativescript-unit-test-runner": "^0.7.0",
