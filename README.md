@@ -38,6 +38,24 @@ Note: I found there is need to do the following steps:
 Note: You need macOS plan to run this on circleci.  
 Note: Protect master branch on github by going to settings then check out ```Require status check...``` then select ```CircleCI```.  
 
+
+# Add Font Icons in the project:
+1 - Install [`nativescript-ngx-fonticon`](https://market.nativescript.org/plugins/nativescript-ngx-fonticon/) 
+2 - Use like this: `<Label class="fa" [text]="'fa-bluetooth' | fonticon"></Label>`
+## Important:
+In `app.modules.ts` you have to import like this:
+```
+TNSFontIconModule.forRoot({
+			'fa': require('~/app/assets/css/fa-5.css')
+			/*
+			For non webpack, assuming the assets folder is a sibling of app.module.ts:
+			'fa': require('./assets/css/fa-5.css')
+			*/
+		})
+```
+Also, import `TNSFontIconModule` in all sub-modules without `.forRoot()`.
+
+
 # Links and References:  
 https://www.nativescript.org/nativescript-is-how-you-build-native-mobile-apps-with-angular  
 https://docs.nativescript.org/tooling/testing/testing
