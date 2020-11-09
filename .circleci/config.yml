@@ -18,14 +18,20 @@ jobs:
           command: |
             curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
             # Fetch cocoapods specs from S3 instead of github
+      - restore_cache:
+          key: brew-cache-{{ checksum "/usr/local/Homebrew" }}
       - run:
           name: Setup system dependencies
           command: |
             brew update
             brew cask install android-sdk
             echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-25" "build-tools;25.0.2" "extras;android;m2repository" "extras;google;m2repository"
+      - save_cache:
+          key: brew-cache-{{ checksum "/usr/local/Homebrew" }}
+          paths:
+            - /usr/local/Homebrew
       - restore_cache:
-          key: npm-cache-{{ checksum "./package-lock.json" }}
+          key: npm-cache-{{ checksum "./package.json" }}
       - run:
           name: "Install node dependencies"
           command: |
@@ -33,7 +39,7 @@ jobs:
             npx tns usage-reporting disable
             npx tns error-reporting disable
       - save_cache:
-          key: npm-cache-{{ checksum "./package-lock.json" }}
+          key: npm-cache-{{ checksum "./package.json" }}
           paths:
             - ~/.npm
       - run:
