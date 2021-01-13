@@ -24,7 +24,7 @@ jobs:
             git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow
             git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask fetch --unshallow
             brew update
-            brew cask install android-sdk
+            brew install android-sdk --cask
             echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-25" "build-tools;25.0.2" "extras;android;m2repository" "extras;google;m2repository"
       - restore_cache:
           key: npm-cache-{{ checksum "./package.json" }}
