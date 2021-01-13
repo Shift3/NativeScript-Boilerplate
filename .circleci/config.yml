@@ -1,9 +1,9 @@
-version: 2
+version: 2.1
 
 default_config: &default_config
   working_directory: ~/circleci/SP-NativeScript
   macos:
-    xcode: "9.3.0"
+    xcode: "11.3.0"
   environment:
     ANDROID_HOME: "/usr/local/share/android-sdk"
 
@@ -13,19 +13,21 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys
-      - run:
-          name: Fetch CocoaPods repository
-          command: |
-            curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-            # Fetch cocoapods specs from S3 instead of github
+      # - run:
+      #     name: Fetch CocoaPods repository
+      #     command: |
+      #       curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      #       # Fetch cocoapods specs from S3 instead of github
       - run:
           name: Setup system dependencies
           command: |
+            git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow
+            git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask fetch --unshallow
             brew update
-            brew cask install android-sdk
+            brew install android-sdk --cask
             echo y | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-25" "build-tools;25.0.2" "extras;android;m2repository" "extras;google;m2repository"
       - restore_cache:
-          key: npm-cache-{{ checksum "./package-lock.json" }}
+          key: npm-cache-{{ checksum "./package.json" }}
       - run:
           name: "Install node dependencies"
           command: |
@@ -33,7 +35,7 @@ jobs:
             npx tns usage-reporting disable
             npx tns error-reporting disable
       - save_cache:
-          key: npm-cache-{{ checksum "./package-lock.json" }}
+          key: npm-cache-{{ checksum "./package.json" }}
           paths:
             - ~/.npm
       - run:
@@ -49,18 +51,19 @@ jobs:
       - run:
           name: "Prepare Android"
           command: npx tns prepare android
-      - run:
-          name: "Build iOS"
-          command: |
-            ./scripts/build_ios.sh org.nativescript.circleciint
-      - run:
-          name: "Build Android"
-          command: |
-            ./scripts/build_android.sh
-      - persist_to_workspace:
-          root: ~/circleci
-          paths:
-            - tns-circleci-example
+      # Need to find out where these scripts are
+      # - run:
+      #     name: "Build iOS"
+      #     command: |
+      #       ./scripts/build_ios.sh org.nativescript.circleciint
+      # - run:
+      #     name: "Build Android"
+      #     command: |
+      #       ./scripts/build_android.sh
+      # - persist_to_workspace:
+      #     root: ~/circleci
+      #     paths:
+      #       - tns-circleci-example
 
   test-unit:
     <<: *default_config
@@ -86,18 +89,18 @@ jobs:
             npx tns usage-reporting disable
             npx tns error-reporting disable
             echo "TODO"
-
-  deploy:
-    <<: *default_config
-    steps:
-      - attach_workspace:
-          at: ~/circleci
-      - run:
-          name: "Deploy"
-          command: |
-            npx tns usage-reporting disable
-            npx tns error-reporting disable
-            ./scripts/deploy.sh
+  # This should be uncommented when used in a project
+  # deploy:
+  #   <<: *default_config
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/circleci
+  #     - run:
+  #         name: "Deploy"
+  #         command: |
+  #           npx tns usage-reporting disable
+  #           npx tns error-reporting disable
+  #           ./scripts/deploy.sh
 
 workflows:
   version: 2
@@ -110,9 +113,9 @@ workflows:
       - test-e2e:
           requires:
             - build
-      - deploy:
-          requires:
-            - build
-            - test-unit
-            - test-e2e
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - test-unit
+      #       - test-e2e
 
